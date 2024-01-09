@@ -1,6 +1,5 @@
 using DAL;
 using DAL.DAO;
-using DAOInterfaces.DTO;
 using DAOInterfaces.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
