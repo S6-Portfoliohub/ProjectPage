@@ -17,20 +17,34 @@ namespace AccountPage.Controllers
             _projectDAL = projectDAL;
         }
 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<ProjectViewModel>> GetAllProjectsFromUser(string projectId)
+        [HttpGet("{projectId}")]
+        public async Task<ActionResult<List<ShowcaseItemViewModel>>> GetShowcaseItems(string projectId)
         {
-            ProjectDTO projectDTOs = await _projectDAL.GetProjectById(projectId);
-            ProjectViewModel project = new ProjectViewModel() { Id = projectDTOs.Id, Description = projectDTOs.Description, Name = projectDTOs.Name, Img = projectDTOs.Img };
-
-            return project;
+            List<ShowcaseItemDTO> showcaseItems = await _projectDAL.GetShowcaseItems(projectId);
+            return Ok(showcaseItems.Select(showcaseItem => new ShowcaseItemViewModel
+            {
+                Id = showcaseItem.Id,
+                ProjectId = showcaseItem.ProjectId,
+                UserId = showcaseItem.UserId,
+                type = showcaseItem.type,
+                Description = showcaseItem.Description,
+                Img = showcaseItem.Img
+            }).ToList());
         }
 
-        [HttpPost("{userId}")]
-        public async Task<ActionResult> CreateProject(ProjectViewModel project)
+        [HttpPost]
+        public async Task<ActionResult<ShowcaseItemViewModel>> CreateShowcaseItem(ShowcaseItemViewModel showcaseItem)
         {
-            await _projectDAL.AddProjectForUser(new() { Name = project.Name, Description = project.Description, UserId = "test" });
-            return Ok();
+            ShowcaseItemDTO showcaseItemDTO = new ShowcaseItemDTO
+            {
+                ProjectId = showcaseItem.ProjectId,
+                UserId = showcaseItem.UserId,
+                type = showcaseItem.type,
+                Description = showcaseItem.Description,
+                Img = showcaseItem.Img
+            };
+            await _projectDAL.CreateShowcaseItem(showcaseItemDTO);
+            return CreatedAtAction(nameof(GetShowcaseItems), new { projectId = showcaseItem.ProjectId }, showcaseItem);
         }
     }
 }

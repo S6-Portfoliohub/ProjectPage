@@ -7,7 +7,7 @@ namespace DAL.DAO
 {
     public class ProjectDAO : IProjectDAO
     {
-        private readonly IMongoCollection<ProjectDTO> _projectCollection;
+        private readonly IMongoCollection<ShowcaseItemDTO> _projectCollection;
 
         public ProjectDAO(IOptions<ProjectDatabaseSettings> projectDatabaseSettings)
         {
@@ -17,28 +17,19 @@ namespace DAL.DAO
             var mongoDatabase = mongoClient.GetDatabase(
                 projectDatabaseSettings.Value.DatabaseName);
 
-            _projectCollection = mongoDatabase.GetCollection<ProjectDTO>(
+            _projectCollection = mongoDatabase.GetCollection<ShowcaseItemDTO>(
                 projectDatabaseSettings.Value.ProjectCollectionName);
         }
 
-        public async Task<ProjectDTO> GetProjectById(string projectId)
+        public async Task<List<ShowcaseItemDTO>> GetShowcaseItems(string projectId)
         {
-            return await _projectCollection.Find(x => x.UserId == projectId).FirstOrDefaultAsync();
+            List<ShowcaseItemDTO> showcaseItems = await _projectCollection.Find<ShowcaseItemDTO>(showcaseItem => showcaseItem.ProjectId == projectId).ToListAsync();
+            return showcaseItems;
         }
 
-        public async Task AddProjectForUser(ProjectDTO projectDTO)
+        public async Task CreateShowcaseItem(ShowcaseItemDTO showcaseItem)
         {
-            await _projectCollection.InsertOneAsync(projectDTO);
-        }
-
-        public async Task UpdateProjectForUser(ProjectDTO projectDTO)
-        {
-            await _projectCollection.ReplaceOneAsync(x => x.Id == projectDTO.Id, projectDTO);
-        }
-
-        public async Task DeleteProjectFromUser(string projectId)
-        {
-            await _projectCollection.DeleteOneAsync(x => x.Id == projectId);
+            await _projectCollection.InsertOneAsync(showcaseItem);
         }
     }
 }
