@@ -1,18 +1,18 @@
-﻿using AccountPage.Models;
-using DAL.DAO;
+﻿using DAL.DAO;
 using DAOInterfaces.DTO;
 using DAOInterfaces.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using ProjectPage.Models;
 
 namespace AccountPage.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProjectController : ControllerBase
+    public class ShowcaseController : ControllerBase
     {
         private readonly IProjectDAO _projectDAL;
 
-        public ProjectController(IProjectDAO projectDAL)
+        public ShowcaseController(IProjectDAO projectDAL)
         {
             _projectDAL = projectDAL;
         }
