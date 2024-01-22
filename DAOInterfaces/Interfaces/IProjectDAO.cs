@@ -17,5 +17,12 @@ namespace DAOInterfaces.Interfaces
         /// <param name="showcaseItem"></param>
         /// <returns></returns>
         Task CreateShowcaseItem(ShowcaseItemDTO showcaseItem);
+
+        /// <summary>
+        /// Get all showcase items from a user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<ShowcaseItemDTO>> GetShowcaseItemsByUser(string userId);
     }
 }

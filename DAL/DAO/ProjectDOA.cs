@@ -31,5 +31,11 @@ namespace DAL.DAO
         {
             await _projectCollection.InsertOneAsync(showcaseItem);
         }
+
+        public async Task<List<ShowcaseItemDTO>> GetShowcaseItemsByUser(string userId)
+        {
+            List<ShowcaseItemDTO> showcaseItems = await _projectCollection.Find<ShowcaseItemDTO>(showcaseItem => showcaseItem.UserId == userId).ToListAsync();
+            return showcaseItems;
+        }
     }
 }
