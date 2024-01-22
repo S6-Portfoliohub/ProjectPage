@@ -37,5 +37,10 @@ namespace DAL.DAO
             List<ShowcaseItemDTO> showcaseItems = await _projectCollection.Find<ShowcaseItemDTO>(showcaseItem => showcaseItem.UserId == userId).ToListAsync();
             return showcaseItems;
         }
+
+        public async Task DeleteShowcaseItemsByUser(string userId)
+        {
+            await _projectCollection.DeleteManyAsync(showcaseItem => showcaseItem.UserId == userId);
+        }
     }
 }

@@ -47,6 +47,13 @@ namespace AccountPage.Controllers
             }).ToList());
         }
 
+        [HttpDelete("user/{userId}")]
+        public async Task<ActionResult> DeleteShowcaseItemsByUser(string userId)
+        {
+            await _projectDAL.DeleteShowcaseItemsByUser(userId);
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<ActionResult<ShowcaseItemViewModel>> CreateShowcaseItem(ShowcaseItemViewModel showcaseItem)
         {
